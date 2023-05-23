@@ -22,12 +22,12 @@ namespace InterviewTest.Controllers
 
         private async Task SeedPeople()
         {
-            var person = _personContext.People.FirstOrDefault(p => p.Id == 1);
+            var person = _personContext.Set<Person>().FirstOrDefault(p => p.Id == 1);
             if (person == null)
             {
                 await _personContext.AddRangeAsync(new List<Person>(){
                     new Person()
-                    {
+                {
                         Id = 1,
                         FirstName = "Jim",
                         LastName = "Parsons",
@@ -39,7 +39,7 @@ namespace InterviewTest.Controllers
                         FirstName = "Tony",
                         LastName = "Smith",
                         Birthday = new DateTime(1937,6,10)
-                    }
+                }
 
                 });
                 await _personContext.SaveChangesAsync();
@@ -49,8 +49,8 @@ namespace InterviewTest.Controllers
 
         private async Task SeedPlaces()
         {
-            var person = _placeContext.Places.FirstOrDefault(p => p.Id == 1);
-            if (person == null)
+            var person = _placeContext.Set<Place>().FirstOrDefault(p => p.Id == 1);
+            if (person == null && ModelState.IsValid)
             {
                 await _placeContext.AddRangeAsync(new List<Place>() {
             new Place()
@@ -74,8 +74,8 @@ namespace InterviewTest.Controllers
 
         private async Task SeedThings()
         {
-            var person = _context.Things.FirstOrDefault(p => p.Id == 1);
-            if (person == null)
+            var person = _context.Set<Thing>().FirstOrDefault(p => p.Id == 1);
+            if (person == null && ModelState.IsValid)
             {
                 await _context.AddRangeAsync(new List<Thing>()
         {

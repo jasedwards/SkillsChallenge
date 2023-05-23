@@ -2,14 +2,21 @@
 
 namespace InterviewTest.Models
 {
-    public class ThingContext : DbContext
+    public class ThingContext : BaseDbContext<ThingContext>
     {
         public ThingContext(DbContextOptions<ThingContext> options)
             : base(options)
         {
            
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
 
-        public DbSet<Thing> Things { get; set; } = null!;
+            var x = builder.Entity<Thing>(config =>
+            {
+                config.ToTable("Things");
+            });
+        }
     }
 }

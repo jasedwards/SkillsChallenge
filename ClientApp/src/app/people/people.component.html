@@ -1,7 +1,7 @@
-<input type="search" appQuickSearch (valueUpdated)="search($event)"/>
-<ng-container *ngIf="!isLoading;else loading">
-  <app-table [rows]="rows" [columns]="columns"></app-table>
+<input type="search" appQuickSearch (valueUpdated)="searchStream$.next($event)" />
+<ng-container *ngIf="obs$ | customLoading | async as obs">
+  
+  <app-table *ngIf="obs.value" [rows]="obs.value" [columns]="columns"></app-table>
+  <ng-template [ngIf]="obs.error">Error {{ obs.error }}</ng-template>
+  <ng-template [ngIf]="obs.loading">Loading...</ng-template>
 </ng-container>
-<ng-template #loading>
-  Loading...
-</ng-template>

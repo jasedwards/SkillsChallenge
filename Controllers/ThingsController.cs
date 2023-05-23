@@ -25,10 +25,10 @@ namespace InterviewTest.Controllers
         {
             if (!string.IsNullOrEmpty(filter))
             {
-                return await _context.Things.Where(p => p.Name.ToLower().Contains(filter.ToLower()) || p.Description.ToLower().Contains(filter.ToLower())).ToListAsync();
+                return await _context.Set<Thing>().Where(p => p.Name.ToLower().Contains(filter.ToLower()) || p.Description.ToLower().Contains(filter.ToLower())).ToListAsync();
             }
 
-            return await _context.Things.ToListAsync();
+            return await _context.Set<Thing>().ToListAsync();
         }
     }
 }

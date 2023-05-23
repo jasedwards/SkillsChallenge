@@ -24,10 +24,10 @@ namespace InterviewTest.Controllers
         {
             if (!string.IsNullOrEmpty(filter))
             {
-                return await _context.Places.Where(p => p.Name.ToLower().Contains(filter.ToLower()) || p.City.ToLower().Contains(filter.ToLower()) || p.State.ToLower().Contains(filter.ToLower())).ToListAsync();
+                return await _context.Set<Place>().Where(p => p.Name.ToLower().Contains(filter.ToLower()) || p.City.ToLower().Contains(filter.ToLower()) || p.State.ToLower().Contains(filter.ToLower())).ToListAsync();
             }
 
-            return await _context.Places.ToListAsync();
+            return await _context.Set<Place>().ToListAsync();
         }
     }
 }

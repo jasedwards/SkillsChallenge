@@ -32,8 +32,9 @@ export function initApp(service: InitializeService) {
     RouterModule.forRoot([
       { path: 'people', loadComponent: () => import('./people/people.component').then(m => m.PeopleComponent) },
       { path: 'things', loadComponent: () => import('./things/things.component').then(m => m.ThingsComponent) },
+      { path: 'places', loadComponent: () => import('./places/places.component').then(m => m.PlacesComponent) },
       { path: '', redirectTo: 'people', pathMatch: 'full' },
-    ], { initialNavigation: 'disabled' }),
+    ], { initialNavigation: 'disabled',useHash: true }),
     StoreModule.forRoot({}, {})
   ],
   providers: [{ provide: ThemeChanger, useFactory: GetThemeChanger },

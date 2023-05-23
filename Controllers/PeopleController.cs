@@ -1,6 +1,7 @@
 ﻿using InterviewTest.Models;
+using InterviewTest.Repositories.Wrappers;
+using InterviewTest.ValidationFilters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace InterviewTest.Controllers
 {
@@ -8,27 +9,45 @@ namespace InterviewTest.Controllers
     [Route("api/[controller]")]
     public class PeopleController : ControllerBase
     {
-        private readonly PersonContext _context;
-      
+        private readonly IPersonRepositoryWrapper _repositoryWrapper;
 
-        private readonly ILogger<PeopleController> _logger;
+        public PeopleController(IPersonRepositoryWrapper repositoryWrapper)
 
-        public PeopleController(ILogger<PeopleController> logger, PersonContext context) { 
-            _logger = logger;
-            _context = context; 
+        {
+            _repositoryWrapper = repositoryWrapper;
         }
-
-
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Person>>> Get(string? filter)
         {
-            if(!string.IsNullOrEmpty(filter))
-            {
-                return await _context.People.Where(p => p.LastName.ToLower().Contains(filter.ToLower()) || p.FirstName.ToLower().Contains(filter.ToLower())).ToListAsync();
-            }
-            
-            return await _context.People.ToListAsync();
+            var result = !string.IsNullOrEmpty(filter) ?
+                await _repositoryWrapper.SearchAsync(p => p.LastName.ToLower().Contains(filter.ToLower()) || p.FirstName.ToLower().Contains(filter.ToLower()))
+                :
+                await _repositoryWrapper.GetAllAsync();
+            return result.ToList();
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(ValidationModelAttribute))]
+        public async Task<ActionResult> Create([FromBody]Person person)
+        {
+            var result = await _repositoryWrapper.CreateAsync(person);
+            return Ok(result);
+        }
+
+        [HttpPatch]
+        [ServiceFilter(typeof(ValidationModelAttribute))]
+        public async Task<ActionResult> Patch([FromBody] Person person)
+        {
+            var result = await _repositoryWrapper.UpdateAsync(person);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> Patch(long id)
+        {
+            var result = await _repositoryWrapper.RemoveAsync(id);
+            return Ok(result);
         }
     }
 }
