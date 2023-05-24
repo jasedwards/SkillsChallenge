@@ -1,0 +1,35 @@
+4. Refactor: Remove the X-Powered-By response header
+Ans : We can remove it by disabling it : app.disable('x-powered-by');
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1. Is DbContext used in a thread safe manner?
+
+   No, DbContext is not thread-safe.  We can use a separate DbContext instance for each thread.
+
+
+2. What would be the server side steps to add an ability to input a new Person record?
+       1.  Verify the new person details using server side validation 
+           ex: name : validate for special chars, total chars length 
+           ex: mobile no : check mobile no format
+       2. if valid, then we have to insert record to the db, using store procedure
+       3. connect application to db using connection string
+       4. we will get this connection string in our codebehind file.
+       5. And mention store procedure name and send all the values(parameters) to the store procedure.
+       
+
+       
+3. What are the security concerns with data UPSERT? How would you resolve those concerns?
+ 
+upsert will update the existing recrods and insert the non existing ones
+     1. SQL Injection
+     2. Data Loss in the Cloud
+     3. Insider Threats
+     4. Accidental Exposure
+
+ overcome this by 
+    1. Data Discovery and Classification
+    2. Data Masking
+    3. Identity Access Management
+    4. Data Encryption
+    5. Data Loss Prevention (DLP)
