@@ -42,7 +42,7 @@ export class PeopleComponent implements OnInit {
     this.service.fetch(filter).subscribe(value => {
       this.rows = value;
       this.isLoading = false;
-      this.cd.detectChanges();
+      this.cd.detectChanges();  this.cd.destroy();
     });
   }
 
