@@ -1,9 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit,OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableComponent } from '../table/table.component';
 import { PeopleService } from './people.service';
 import { TableData } from '../table-data';
 import { QuickSearchDirective } from '../quick-search.directive';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-people',
@@ -12,8 +13,9 @@ import { QuickSearchDirective } from '../quick-search.directive';
   templateUrl: './people.component.html',
   styleUrls: ['./people.component.css']
 })
-export class PeopleComponent implements OnInit {
+export class PeopleComponent implements OnInit, OnDestroy {
   isLoading = true;
+  subscriptions: Subscription = new Subscription;
   rows!: { [key: string]: any }[];
   readonly columns: TableData[] = [
     {
@@ -39,11 +41,14 @@ export class PeopleComponent implements OnInit {
   }
 
   search(filter = '') {
-    this.service.fetch(filter).subscribe(value => {
+    this.subscriptions=this.service.fetch(filter).subscribe(value => {
       this.rows = value;
       this.isLoading = false;
       this.cd.detectChanges();
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 }

@@ -1,9 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableComponent } from '../table/table.component';
 import { TableData } from '../table-data';
 import { ThingsService } from './things.service';
 import { QuickSearchDirective } from '../quick-search.directive';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-things',
@@ -12,8 +14,9 @@ import { QuickSearchDirective } from '../quick-search.directive';
   templateUrl: './things.component.html',
   styleUrls: ['./things.component.css']
 })
-export class ThingsComponent implements OnInit {
+export class ThingsComponent implements OnInit, OnDestroy {
   isLoading = true;
+  subscriptions: Subscription = new Subscription;
   rows!: { [key: string]: any }[];
   readonly columns: TableData[] = [
     {
@@ -35,11 +38,14 @@ export class ThingsComponent implements OnInit {
   }
 
   search(filter = '') {
-    this.service.fetch(filter).subscribe(value => {
+    this.subscriptions = this.service.fetch(filter).subscribe(value => {
       this.rows = value;
       this.isLoading = false;
       this.cd.detectChanges();
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 }
