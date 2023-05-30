@@ -20,6 +20,13 @@
 
 1. Is DbContext used in a thread safe manner?
 
+-- No,DbContext is not thread safe, because it will prevent multiple query over the same db connection.
+
 2. What would be the server side steps to add an ability to input a new Person record?
+1.Create an [HttpPost] action method in People Controller, this method will be for validating and storing the new person record to Database.
+2. Verify whether the received data from the user is null or not, if not proceed further, else return status code.
+3. Validate the received model for any validations if required.
+4. Add the user to db, and then on successful addition return success status code or the updated people data.
 
 3. What are the security concerns with data UPSERT?  How would you resolve those concerns?
+1. 
