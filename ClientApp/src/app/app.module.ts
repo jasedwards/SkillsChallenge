@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, InjectionToken, NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -31,6 +31,7 @@ export function initApp(service: InitializeService) {
     FormsModule,
     RouterModule.forRoot([
       { path: 'people', loadComponent: () => import('./people/people.component').then(m => m.PeopleComponent) },
+      { path: 'places', loadComponent: () => import('./places/places.component').then(m => m.PlacesComponent) },
       { path: 'things', loadComponent: () => import('./things/things.component').then(m => m.ThingsComponent) },
       { path: '', redirectTo: 'people', pathMatch: 'full' },
     ], { initialNavigation: 'disabled' }),

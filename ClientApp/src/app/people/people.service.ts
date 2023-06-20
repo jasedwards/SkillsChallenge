@@ -11,4 +11,8 @@ export class PeopleService {
   fetch(filter = '') {
     return this.http.get<any[]>(this.baseUrl + `api/people?filter=${filter}`);
   }
+
+  addPerson(person: any) {
+    return this.http.post<any[]>(this.baseUrl + `api/People`, person);
+  }
 }
