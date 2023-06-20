@@ -30,5 +30,17 @@ namespace InterviewTest.Controllers
             
             return await _context.People.ToListAsync();
         }
+
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<Person>>> AddPerson([FromBody]Person person)
+        {
+
+            if (!_context.People.Any(p => p.FirstName.ToLower() == person.FirstName.ToLower()))
+            {
+                _context.People.Add(person);
+                _context.SaveChanges();
+            }
+            return await _context.People.ToListAsync();
+        }
     }
 }

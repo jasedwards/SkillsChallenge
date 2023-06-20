@@ -1,5 +1,7 @@
 using InterviewTest.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 app.UseRouting();
+
+app.Use((context, next) =>
+{
+    if (context.Response.Headers.ContainsKey("X-Powered-By"))
+    {
+        context.Response.Headers.Remove("X-Powered-By");
+    }
+    return next(context);
+});
 
 app.MapControllers();
 

@@ -23,3 +23,30 @@
 2. What would be the server side steps to add an ability to input a new Person record?
 
 3. What are the security concerns with data UPSERT?  How would you resolve those concerns?
+
+
+## ====================================================================================================
+
+1. Is DbContext used in a thread safe manner?
+Ans. =>   DbContext is not thread safe. EF Core does not support multiple parallel operations being run on the same context instance.
+
+2. What would be the server side steps to add an ability to input a new Person record?
+Ans. => Steps to add new person record: 
+   a.In PeopleController, create a endpoint with [HttpPost] method with parameter to get data from request with an [FormBody] attribute.
+   b.Check if person with same name is already exists in the Dbcontext.
+   c.If the person dosn't exist then add new person to the dbcontext.People collection.
+   d.save the changes made on dbcontext.
+   e.return the new updated List of person.
+
+3. What are the security concerns with data UPSERT?  How would you resolve those concerns?
+Ans. =>
+   a. Access control: Ensure that only authorized users can perform UPSERT operations.
+   b. Data validation: Validate incoming data to prevent malicious or incorrect input.
+   e. Auditing and logging: Maintain detailed logs of UPSERT operations for auditing purposes.
+
+## ======================================================================================================
+
+5. Refactor:  Some points to improve the quality of this application:
+
+a. Add, edit, delete functionality can be implemented to the People, Places and Things entities. It will provide more control to the user.
+b. Pagination feature to display large data.
